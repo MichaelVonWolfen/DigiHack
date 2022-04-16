@@ -7,6 +7,7 @@ import {MantineProvider} from "@mantine/core";
 import "./reset.scss"
 import Lost from './pages/lost/lost';
 import Found from './pages/found/found';
+import Search from './pages/search/search';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +21,7 @@ root.render(
                     <Route path="/" element={<Home />}/>
                     <Route path="/lost" element={<Lost />}/>
                     <Route path="/found" element={<Found />}/>
-                    {/* <Route path="/search" element={<Search />}/> */}
+                    <Route path="/search" element={<Search />}/>
                 </Routes>
             </BrowserRouter>
         </MantineProvider>
