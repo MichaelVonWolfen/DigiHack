@@ -1,11 +1,12 @@
 // modified version of from Andy Bell's reset
 // https://piccalil.li/blog/a-modern-css-reset/
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 /* Box sizing rules */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Remove default margin and padding and reset fonts */
@@ -13,6 +14,7 @@
   margin: 0;
   padding: 0;
   font: inherit;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */

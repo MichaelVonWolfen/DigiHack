@@ -3,10 +3,12 @@ import { useWindowScroll } from '@mantine/hooks';
 import { Affix, Button, Transition } from '@mantine/core';
 import "./home.sass"
 import CountUp from 'react-countup';
+import lost from "../../assets/wanted.png"
+import found from "../../assets/badges.png"
 
 let gap = 40
 let imageWidth = 200;
-const animalsCount = 22;
+const animalsCount = 20;
 const GetImages = ()=>{
     const list = []
     const windowWidth = window.innerWidth
@@ -33,14 +35,22 @@ export default function Home(){
     const [scroll, scrollTo] = useWindowScroll();
     return(
         <div className={"homeContainer"}>
-            <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }}>Lost Pet</Button>
-            <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' ,deg: -100}}>Found Pet</Button>
-            <CountUp
-                end={2123543}
-                separator={"."}
-                duration={5}
-            />
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A alias, delectus dignissimos et exercitationem laborum minima molestias omnis sequi velit vitae voluptatem. Ab accusamus amet aperiam at aut, cupiditate dicta distinctio doloremque dolores doloribus ducimus error et eum expedita inventore ipsum laborum magni necessitatibus nemo nesciunt nisi nostrum obcaecati placeat quaerat quasi quia rerum sapiente tempora tempore totam unde ut vel velit veritatis, voluptas, voluptatem voluptatibus? Architecto aspernatur blanditiis cum dolor dolores eius eligendi enim et, facilis harum id illo in ipsa iusto libero maiores mollitia nam nemo quae qui quo quod sit temporibus tenetur totam ut veritatis! Accusamus, optio?</p>
+            <div className="buttons">
+                <a href="/lost"><img src={lost} alt="Lost Pet"/><span>Lost Pet</span></a>
+                <a href="/found"><img src={found} alt="Found Per"/><span>Found Pet</span></a>
+            </div>
+            <div className="Countable">
+                <span className="left">Saved over</span>
+                <CountUp className={"counter"}
+                    end={2123543}
+                    separator={"."}
+                    duration={120}
+                />
+                <span className="right">pets!</span>
+            </div>
+            <p>
+                The American Humane Association estimates over 10 million dogs and cats are lost or stolen in the U.S. every year. One in three pets will become lost at some point during their life. Each year, approximately 1.5 million shelter animals are euthanized (670,000 dogs and 860,000 cats).
+            </p>
              {/* @ts-ignore */}
             <div className="carousel" style={{'--gap':`${gap}px`}}>
                 {GetImages()}
@@ -49,6 +59,7 @@ export default function Home(){
                 <Transition transition="slide-up" mounted={scroll.y > 0}>
                     {(transitionStyles) => (
                         <Button
+                            color="violet"
                             leftIcon={<ArrowUpwardIcon/>}
                             style={transitionStyles}
                             onClick={() => scrollTo({ y: 0 })}
