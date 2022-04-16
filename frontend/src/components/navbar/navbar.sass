@@ -1,0 +1,23 @@
+.navbarContainer
+  display: grid
+  grid-template-areas: "image search navigationLinks"
+  grid-template-columns: repeat(3, 1fr)
+  padding: 10px 0
+  img
+    margin: 0 50px
+    width: 50px
+    aspect-ratio: 1 / 1
+  ul
+    list-style-type: none
+    grid-area: navigationLinks
+    margin: 0 auto
+    li
+      float: left
+      padding: 10px
+      &:hover
+        background-color: gray
+        a
+          color: red
+      a
+        text-decoration: none
+        color: black
