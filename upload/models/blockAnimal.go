@@ -2,7 +2,6 @@ package models
 
 type BlockAnimal struct {
 	Prevhash    string `json:"prevhash"`
-	Hash        string `json:"hash"`
 	Owner       string `json:"owner"`
 	Image       string `json:"image"`
 	Description string `json:"description"`

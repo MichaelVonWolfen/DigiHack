@@ -12,9 +12,11 @@ import (
 func readDataIpfsWallet(cid string) models.BlockWallet {
 	sh := shell.NewShell("https://ipfs.infura.io:5001")
 	data, err := sh.Cat(cid)
+	res := models.BlockWallet{}
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s", err)
-		os.Exit(1)
+		return res
+		//os.Exit(1)
 	}
 
 	// ...so we convert it to a string by passing it through
@@ -24,7 +26,6 @@ func readDataIpfsWallet(cid string) models.BlockWallet {
 	buf.ReadFrom(data)
 	newStr := buf.String()
 
-	res := models.BlockWallet{}
 	json.Unmarshal([]byte(newStr), &res)
 	fmt.Println(res)
 	return res

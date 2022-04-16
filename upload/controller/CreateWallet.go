@@ -14,6 +14,7 @@ func CreateWallet(w http.ResponseWriter, req *http.Request) {
 
 	var userWallet models.WalletCreate
 	var blockWallet models.BlockWallet
+	var blockReturn models.WalletCreateReturn
 	//var responseReturn models.UploadModelResponse
 
 	userWalletCreate := json.NewDecoder(req.Body)
@@ -38,8 +39,14 @@ func CreateWallet(w http.ResponseWriter, req *http.Request) {
 				getData := services.PutDataIpfsWallet(blockWallet)
 				services.CreateFileWallet(getData)
 				fmt.Println(getData)
+				blockReturn.PublicKey = publicKey
+				blockReturn.PrivateKey = privateKey
+				blockReturn.Phone = blockWallet.Phone
+				blockReturn.CurrentHash = getData
+				blockReturn.PrevHash = blockWallet.PrevHash
+				blockReturn.SecretKey = string(secretkey)
 				fmt.Println(string(services.BlowfishDecrypt([]byte(blockWallet.Phone), secretkey)))
-				json.NewEncoder(w).Encode(blockWallet)
+				json.NewEncoder(w).Encode(blockReturn)
 			} else {
 				retError := models.UploadModelResponse{}
 				retError.Error = 200
