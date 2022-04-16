@@ -1,0 +1,144 @@
+@use "sass:math"
+@keyframes carouselMove
+  0%
+    transform: translateX(0)
+  50%
+    transform: translateX(var(--move, 0px))
+  100%
+    transform: translateX(0)
+@keyframes randomTimedScale
+  0%
+    transform: scale(1)
+  50%
+    transform: scale(1.2)
+  100%
+    transform: scale(1)
+.homeContainer
+  display: grid
+  align-items: center
+  justify-content: center
+  width: 100%
+  gap: 40px
+  .buttons
+    display: flex
+    justify-content: space-evenly
+    a
+      padding: 40px 40px 30px
+      border-radius: 20px
+      text-decoration: none
+      position: relative
+      background: blueviolet
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      box-shadow: 0 0 5px 1px violet
+      color: white
+      font-weight: bolder
+      font-size: 20pt
+      transition: box-shadown ease-in-out 2s
+      &:hover
+        box-shadow: 0 0 10px 2px violet
+      span
+        margin: 15px 0 0
+      img
+        width: 200px
+  p
+    width: 60%
+    margin: 0 auto
+    text-align: center
+    font-size: 14pt
+  .Countable
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+    padding: 100px
+    span
+      font-weight: bold
+      font-size: 55pt
+      position: absolute
+      &.left
+        opacity: 0.3
+        left: 35%
+        top: 30%
+        transform: translate(-50%, -50%)
+      &.right
+        right: 30%
+        opacity: 0.3
+        top: 65%
+        transform: translate(-50%, -50%)
+    .counter
+      font-size: 40pt
+      font-weight: 200
+  .carousel
+    display: flex
+    flex-wrap: nowrap
+    gap: var(--gap, 140px)
+    margin: 20px 0
+    overflow: hidden
+    padding: 40px 0
+    .imgCarousel
+      @for $i from 1 to 100
+        &:nth-child(#{$i})
+          animation: carouselMove linear 60s infinite
+          img
+            animation: randomTimedScale linear 2s infinite #{math.random(2000)}ms
+      img
+        min-width: 200px
+        aspect-ratio: 1/1
+        object-fit: cover
+@media screen and (max-width: 1200px)
+  .homeContainer
+    .Countable
+      span
+        &.right
+          right: 20%
+@media screen and (max-width: 800px)
+  .homeContainer
+    .carousel
+      gap: 30px
+      .imgCarousel
+        img
+          min-width: 125px
+          aspect-ratio: 1/1
+          object-fit: cover
+    p
+      font-size: 12pt
+    .Countable
+      span
+        &.right
+          right: 10%
+@media screen and (max-width: 658px)
+  .homeContainer
+    .buttons
+      a
+        padding: 20px 20px 10px
+        box-shadow: 0 0 5px 1px violet
+        color: white
+        font-size: 16pt
+        span
+          margin: 20px 0 0
+        img
+          width: 150px
+    .Countable
+      span
+        font-size: 25pt
+        &.left
+          top: 20%
+          left: 50%
+        &.right
+          top: 75%
+          left: 60%
+@media screen and (max-width: 450px)
+  .homeContainer
+    .buttons
+      a
+        padding: 20px 25px 10px
+        box-shadow: 0 0 5px 1px violet
+        color: white
+        font-size: 14pt
+        span
+          margin: 10px 0 0
+        img
+          width: 75px

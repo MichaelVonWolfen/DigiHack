@@ -1,20 +1,38 @@
-import { Container, Group, Stack, Select, Modal, Button } from '@mantine/core';
+import { Container, Group, Stack, Select, Modal, Button, Center } from '@mantine/core';
 import { useState } from 'react';
 import { SPECIES_LIST } from '../../common/animal-species';
-import c from '@mui/material/TextField';
+import { LocationPicker } from '../../components/location-picker/location-picker';
+
+interface SearchAnimalFormData {
+    species?: string;
+    before?: Date;
+    after?: Date;
+    location?: {
+        lat: number;
+        lng: number;
+    };
+}
 
 
 export default function Search() {
-    const [openedLocationPopover, setOpenedLocationPopover] = useState(false);
+    const [formData, setFormData] = useState<Partial<SearchAnimalFormData>>({});
+    const [openedLocationModal, setOpenedLocationModal] = useState(false);
 
     return (
         <Container>
             <Modal
-                opened={openedLocationPopover}
-                onClose={() => setOpenedLocationPopover(false)}
-                title="Introduce yourself!"
+                opened={openedLocationModal}
+                onClose={() => setOpenedLocationModal(false)}
+                title="Location of interest"
             >
-                {/* Modal content */}
+                <Center>
+                    <LocationPicker height={320} width={450}
+                        setLocation={(lat: number, lng: number) => setFormData({
+                            ...formData,
+                            location: { lat, lng }
+                        })}
+                    />
+                </Center>
             </Modal>
             <Group>
                 <Select
@@ -34,7 +52,7 @@ export default function Search() {
                             label: spec
                         };
                     })} />
-                <Button onClick={() => setOpenedLocationPopover(true)}>Location</Button>
+                <Button onClick={() => setOpenedLocationModal(true)}>Location</Button>
             </Group>
             <Stack>
 

@@ -1,15 +1,17 @@
-import { Stepper, Button, Container, Center, Group, Stack, TextInput, Textarea, Text } from '@mantine/core';
+import { Stepper, Button, Container, Center, Group, Stack, TextInput, Textarea, Text, Space } from '@mantine/core';
 import { useState } from 'react';
-import { DateTimePicker } from '../../components/date-picker/date-picker';
 import { DropFileUpload } from '../../components/drop-file-upload/drop-fiile-upload';
 import { LocationPicker } from '../../components/location-picker/location-picker';
 import { SpeciesPicker } from '../../components/species-picker/species-picker';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 interface FoundAnimalFormData {
     species: string;
     imageFile: File | null;
-    date: Date;
-    time: Date;
+    datetime: Date;
     location: {
         lat: number;
         lng: number;
@@ -41,7 +43,7 @@ export interface CreateListingProps {
 }
 
 export default function CreateListing(props: CreateListingProps) {
-    const [formData, setFormData] = useState<Partial<FoundAnimalFormData>>();
+    const [formData, setFormData] = useState<Partial<FoundAnimalFormData>>({});
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [activeStep, setActiveStep] = useState<number>(0);
     const nextStep = () => setActiveStep((current) => (current < steps.length ? current + 1 : current));
@@ -63,28 +65,23 @@ export default function CreateListing(props: CreateListingProps) {
                     imageFile: file
                 })} />);
             case 2:
-                return (<>
+                return (<LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                        dateLabel="Day you have found the lost pet"
-                        timeLabel="Hour you have found the lost pet"
-                        setDate={(date) => setFormData({
-                            ...formData,
-                            date: date ?? undefined
-                        })}
-                        setTime={(date) => setFormData({
-                            ...formData,
-                            time: date ?? undefined
-                        })}
+                        renderInput={(props) => <TextField {...props} />}
+                        label="DateTimePicker"
+                        value={formData?.datetime ?? new Date()}
+                        onChange={(datetime) => {
+                            setFormData({
+                                ...formData,
+                                datetime: datetime ?? undefined
+                            })
+                        }}
                     />
-                </>);
+                </LocalizationProvider>);
             case 3:
-                return (<LocationPicker setLocation={(lat: number, lng: number) => setFormData({
-                    ...formData,
-                    location: {
-                        lat,
-                        lng
-                    }
-                })} />);
+                return (<LocationPicker
+                    width={600} height={400}
+                    setLocation={(lat: number, lng: number) => formData.location = {lat, lng}} />);
             case 4:
                 return (<Stack>
                     <Text>
@@ -133,14 +130,19 @@ export default function CreateListing(props: CreateListingProps) {
                 {steps.map(step => {
                     return (
                         <Stepper.Step key={step.name} label={step.name} allowStepSelect={false}>
-                            {step.message}
+                            <Center>
+                                {step.message}
+                            </Center>
                         </Stepper.Step>
                     );
                 })}
                 <Stepper.Completed>
-                    Completed, click back button to get to previous step
+                    <Center>
+                        Completed, click back button to get to previous step
+                    </Center>
                 </Stepper.Completed>
             </Stepper>
+            <Space h="xl" />
             <Center>
                 {getComponentsPerStep(activeStep)}
             </Center>

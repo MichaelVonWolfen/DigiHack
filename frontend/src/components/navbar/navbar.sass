@@ -1,19 +1,23 @@
 .navbarContainer
+  background-color: white
   display: grid
-  grid-template-areas: "image search navigationLinks"
-  grid-template-columns: repeat(3, 1fr)
-  padding: 10px 0
+  grid-template-areas: "image navigationLinks"
+  grid-template-columns: 1fr 3fr
+  padding: 5px 10px
+  //border: red 1px solid
   img
-    margin: 0 50px
     width: 50px
     aspect-ratio: 1 / 1
   ul
     list-style-type: none
     grid-area: navigationLinks
-    margin: 0 auto
+    justify-self: flex-end
+    display: flex
+    gap: 20px
+    align-items: center
+    .hamburgerMenu
+      display: none
     li
-      float: left
-      padding: 10px
       &:hover
         background-color: gray
         a
@@ -21,3 +25,43 @@
       a
         text-decoration: none
         color: black
+  .mobile
+    list-style-type: none
+    grid-area: navigationLinks
+    display: flex
+    flex-direction: column
+    gap: 20px
+    align-items: center
+    position: fixed
+    background: inherit
+    height: 100vh
+    z-index: 999
+    box-shadow: 0 0 10px 1px lightgray
+    top: 0
+    right: 0
+    width: max(300px, 40vw)
+    padding: 40px
+    transform: translateX(0)
+    transition: ease-out 500ms
+    .closeIcon
+      position: absolute
+      right: 20px
+      top: 20px
+      cursor: pointer
+      width: 30px
+      height: 30px
+    li
+      width: 60%
+      text-align: center
+      padding: 10px 0
+    &.hidden
+      transform: translateX(max(300px, 40vw))
+@media screen and (max-width: 678px)
+  .navbarContainer
+    .computer
+      li
+        display: none
+      .hamburgerMenu
+        display: block
+        width: 30px
+        height: 30px

@@ -6,6 +6,8 @@ const GOOGLE_API_KEY = "AIzaSyByFU02ULot1qvCYYJcCs8EAFd_w7FZEjY";
 
 export interface LocationPickerProps {
   setLocation: (lat: number, lng: number) => void;
+  width: number;
+  height: number;
 }
 
 export function LocationPicker(props: LocationPickerProps) {
@@ -18,6 +20,8 @@ export function LocationPicker(props: LocationPickerProps) {
           }}
           zoom={15}
           setLocation={(lat: number, lng: number) => props.setLocation(lat, lng)}
+          width={props.width}
+          height={props.height}
         />
       </Wrapper>
     </>
@@ -27,10 +31,12 @@ export function LocationPicker(props: LocationPickerProps) {
 export interface MapComponentProps {
   initialPosition: google.maps.LatLngLiteral;
   zoom: number;
-  setLocation: (lat: number, lng: number) => void
+  setLocation: (lat: number, lng: number) => void;
+  width: number;
+  height: number;
 }
 
-function MapComponent({ initialPosition, zoom, setLocation }: MapComponentProps) {
+function MapComponent({ initialPosition, zoom, setLocation, width, height }: MapComponentProps) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -52,5 +58,5 @@ function MapComponent({ initialPosition, zoom, setLocation }: MapComponentProps)
     });
   });
 
-  return <div ref={ref} id="map" style={{ height: 400, width: 400 }} />;
+  return <div ref={ref} id="map" style={{ height: height, width: width }} />;
 }
