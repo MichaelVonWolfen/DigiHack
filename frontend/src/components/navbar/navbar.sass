@@ -1,19 +1,20 @@
 .navbarContainer
   display: grid
-  grid-template-areas: "image search navigationLinks"
-  grid-template-columns: repeat(3, 1fr)
-  padding: 10px 0
+  grid-template-areas: "image navigationLinks"
+  grid-template-columns: repeat(2, 1fr)
+  padding: 5px 10px
+  //border: red 1px solid
   img
-    margin: 0 50px
     width: 50px
     aspect-ratio: 1 / 1
   ul
     list-style-type: none
     grid-area: navigationLinks
-    margin: 0 auto
+    justify-self: flex-end
+    display: flex
+    gap: 20px
+    align-items: center
     li
-      float: left
-      padding: 10px
       &:hover
         background-color: gray
         a
