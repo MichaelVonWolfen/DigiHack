@@ -5,34 +5,28 @@ import "./home.sass"
 import CountUp from 'react-countup';
 import lost from "../../assets/wanted.png"
 import found from "../../assets/badges.png"
+import {useEffect, useState} from "react";
 
 let gap = 40
-let imageWidth = 200;
+const imageWidth = 200
 const animalsCount = 20;
-const GetImages = ()=>{
-    const list = []
-    const windowWidth = window.innerWidth
-    let images_to_repeat = Math.floor(windowWidth / (imageWidth + gap))
-    console.log(images_to_repeat)
-    let moveAmount = (imageWidth) * 25
-    for(let i = 1; i <=animalsCount; i++)
-        list.push(
-            // @ts-ignore
-            <div className="imgCarousel" style={{'--move':`-${moveAmount}px`, '--imageSize':`${imageWidth}px`}} key={i}>
-                <img loading={"lazy"} src={`/images/animal (${i}).jpg`} alt={`Animal_${i}`}/>
-            </div>
-        )
-    for(let i = 1; i <= images_to_repeat; i++)
-        list.push(
-            // @ts-ignore
-            <div className="imgCarousel" style={{'--move':`-${moveAmount}px`, '--imageSize':`${imageWidth}px`}} key={i + 25}>
-                <img loading={"lazy"} src={`/images/animal (${i}).jpg`} alt={`Animal_${i}`}/>
-            </div>
-        )
-    return list
-}
 export default function Home(){
     const [scroll, scrollTo] = useWindowScroll();
+    const GetImages = ()=>{
+        const list = []
+        let moveAmount = (imageWidth) * 25
+        for (let j = 1; j < 3; j++) {
+            for(let i = 1; i <= animalsCount; i++)
+                list.push(
+                    // @ts-ignore
+                    <div className="imgCarousel" style={{'--move':`-${moveAmount}px`, '--imageSize':`${imageWidth}px`}} key={i * 10 + j}>
+                        <img loading={"lazy"} src={`/images/animal (${i}).jpg`} alt={`Animal_${j}`}/>
+                    </div>
+                )
+        }
+        return list
+    }
+
     return(
         <div className={"homeContainer"}>
             <div className="buttons">

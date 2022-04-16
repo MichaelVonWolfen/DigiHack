@@ -81,10 +81,64 @@
     .imgCarousel
       @for $i from 1 to 100
         &:nth-child(#{$i})
-          animation: carouselMove linear 120s infinite
+          animation: carouselMove linear 60s infinite
           img
             animation: randomTimedScale linear 2s infinite #{math.random(2000)}ms
       img
-        min-width: var(--imageSize, 150px)
+        min-width: 200px
         aspect-ratio: 1/1
         object-fit: cover
+@media screen and (max-width: 1200px)
+  .homeContainer
+    .Countable
+      span
+        &.right
+          right: 20%
+@media screen and (max-width: 800px)
+  .homeContainer
+    .carousel
+      gap: 30px
+      .imgCarousel
+        img
+          min-width: 125px
+          aspect-ratio: 1/1
+          object-fit: cover
+    p
+      font-size: 12pt
+    .Countable
+      span
+        &.right
+          right: 10%
+@media screen and (max-width: 658px)
+  .homeContainer
+    .buttons
+      a
+        padding: 20px 20px 10px
+        box-shadow: 0 0 5px 1px violet
+        color: white
+        font-size: 16pt
+        span
+          margin: 20px 0 0
+        img
+          width: 150px
+    .Countable
+      span
+        font-size: 25pt
+        &.left
+          top: 20%
+          left: 50%
+        &.right
+          top: 75%
+          left: 60%
+@media screen and (max-width: 450px)
+  .homeContainer
+    .buttons
+      a
+        padding: 20px 25px 10px
+        box-shadow: 0 0 5px 1px violet
+        color: white
+        font-size: 14pt
+        span
+          margin: 10px 0 0
+        img
+          width: 75px
