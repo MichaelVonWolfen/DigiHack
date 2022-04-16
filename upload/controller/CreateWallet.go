@@ -21,24 +21,31 @@ func CreateWallet(w http.ResponseWriter, req *http.Request) {
 
 	if len(userWallet.Phone) > 0 {
 		if len(userWallet.Pass) > 0 {
-			//CreateFile()
-			//ReadFile()
+
 			privateKey := services.GeneratePrivateKey(userWallet.Phone + userWallet.Pass)
 			publicKey := services.GeneratePubKey(privateKey)
 			plaintext := []byte(userWallet.Phone)
 			secretkey := []byte(privateKey[0:26])
+
 			paddedplaintext := services.BlowfishChecksizeAndPad(plaintext)
 			// lets encrypt
 			encryptedPhoneNumber := services.BlowfishEncrypt(paddedplaintext, secretkey)
 			blockWallet.PublicKey = publicKey
 			blockWallet.Phone = string(encryptedPhoneNumber)
 			lastSaveHash := services.ReadFileLastWallet()
-			blockWallet.PrevHash = lastSaveHash
-			getData := services.PutDataIpfsWallet(blockWallet)
-			services.CreateFileWallet(getData)
-			fmt.Println(getData)
-			fmt.Println(string(services.BlowfishDecrypt([]byte(blockWallet.Phone), secretkey)))
-			json.NewEncoder(w).Encode(blockWallet)
+			if services.VerifyPublicKey(publicKey, lastSaveHash) == 0 {
+				blockWallet.PrevHash = lastSaveHash
+				getData := services.PutDataIpfsWallet(blockWallet)
+				services.CreateFileWallet(getData)
+				fmt.Println(getData)
+				fmt.Println(string(services.BlowfishDecrypt([]byte(blockWallet.Phone), secretkey)))
+				json.NewEncoder(w).Encode(blockWallet)
+			} else {
+				retError := models.UploadModelResponse{}
+				retError.Error = 200
+				retError.Message = "Already created"
+				json.NewEncoder(w).Encode(retError)
+			}
 		}
 	}
 }
