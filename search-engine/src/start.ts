@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { ErrorHandlerMiddleware } from './middleware';
@@ -15,6 +15,11 @@ import { ErrorHandlerMiddleware } from './middleware';
       app.use(cors());
       app.use(express.json());
       app.use(new ErrorHandlerMiddleware().use);
+
+      // routes
+      app.post('/search', (req: Request, res: Response) => {
+         
+      })
 
       // start server
       const port = process.env.PORT;

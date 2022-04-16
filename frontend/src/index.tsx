@@ -5,6 +5,8 @@ import {Home, Navbar} from "./pages/index"
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {MantineProvider} from "@mantine/core";
 import "./reset.scss"
+import Lost from './pages/lost/lost';
+import Found from './pages/found/found';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,6 +18,9 @@ root.render(
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />}/>
+                    <Route path="/lost" element={<Lost />}/>
+                    <Route path="/found" element={<Found />}/>
+                    {/* <Route path="/search" element={<Search />}/> */}
                 </Routes>
             </BrowserRouter>
         </MantineProvider>
