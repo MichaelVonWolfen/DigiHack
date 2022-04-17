@@ -84,7 +84,7 @@ export default function CreateListing(props: CreateListingProps) {
                     setActiveStep(activeStep + 1)
                 }} />);
             case 1:
-                return (<DropFileUpload setFile={async (file) => {
+                return (<DropFileUpload setFile={(file) => {
                     const reader = new FileReader();
                     reader.onloadend = () => {
                         setFormData({
@@ -93,7 +93,7 @@ export default function CreateListing(props: CreateListingProps) {
                             imageFile: reader.result
                         })
                     };
-                    await reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
                 }} />);
             case 2:
                 return (<LocalizationProvider dateAdapter={AdapterDateFns}>
