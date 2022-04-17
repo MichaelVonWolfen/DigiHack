@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { DropFileUpload } from '../../components/drop-file-upload/drop-fiile-upload';
 import { LocationPicker } from '../../components/location-picker/location-picker';
 import { SpeciesPicker } from '../../components/species-picker/species-picker';
-import { MediaQuery } from '@mantine/core';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -53,9 +52,10 @@ export default function CreateListing(props: CreateListingProps) {
     const onSubmit = async () => {
         // send formData to server'
         console.log(formData)
+        let auth = JSON.parse(localStorage.getItem("auth") || "{}")
         let submitableData = {
-            owner: localStorage.getItem("owner") || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
-            cid : localStorage.getItem("cid") || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
+            owner: auth.privateKey || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
+            cid : auth.currentHash || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
             location: formData.location,
             name:formData.name || "",
             description: formData.note || "",

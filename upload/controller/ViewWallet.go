@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "fmt"
 	"encoding/json"
 	"net/http"
 	"upload-digihack/models"
@@ -19,6 +20,7 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 	userWalletCreate := json.NewDecoder(req.Body)
 	userWalletCreate.Decode(&userWallet)
 	lastSaveHash := services.ReadFileLastWallet()
+	fmt.Println(userWallet)
 	if len(userWallet.Phone) > 0 {
 		if len(userWallet.Pass) > 0 {
 			privateKey := services.GeneratePrivateKey(userWallet.Pass)
@@ -40,6 +42,8 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 				blockReturn.CurrentHash = cidSave
 				blockReturn.PrevHash = getData.PrevHash
 				blockReturn.SecretKey = string(secretkey)
+                fmt.Println(blockReturn)
+                fmt.Println("a erjfdn brlka nadoi heio[o niatnbal'terj hoi trtsl hstroo8]")
 				json.NewEncoder(w).Encode(blockReturn)
 
 			}

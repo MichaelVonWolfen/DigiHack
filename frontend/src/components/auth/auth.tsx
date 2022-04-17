@@ -10,7 +10,7 @@ export function Auth() {
 
   return (
     <>
-      {auth === undefined ? (
+      {auth !== null ? (
         <ProfileDropdown/>
       ) : (
         <>
