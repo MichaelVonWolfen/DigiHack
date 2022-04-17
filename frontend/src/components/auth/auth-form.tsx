@@ -50,7 +50,6 @@ export function AuthForm() {
       });
       if (result.error === undefined) {
         localStorage.setItem('auth', JSON.stringify(result));
-        console.log(result.data)
         if(!result.data.error){
           showNotification({
             title:"Succes!",
@@ -81,7 +80,6 @@ export function AuthForm() {
         pass: password
       });
       localStorage.setItem('auth', JSON.stringify(result.data));
-      console.log(result.data)
       if(!result.data.error){
         showNotification({
           title:"Succes!",

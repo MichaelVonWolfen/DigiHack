@@ -10,9 +10,8 @@ export const initListingsPollings = async (type: string) => {
     const retrieveListing = async (hash: string, type: string): Promise<boolean> => {
 
         const listingItem = await getListingFromIpfs(hash, type);
-        console.log(listingItem.prevHash, localStorage.getItem(listingItem.prevHash))
         localForage.setItem(hash, listingItem);
-        if (listingItem.prevHash === 'null' || localStorage.getItem(listingItem.prevHash) === null) {
+        if (listingItem.prevHash === 'null' || localForage.getItem(listingItem.prevHash) !== null) {
             return true;
         }
         return await retrieveListing(listingItem.prevHash, type);
@@ -37,7 +36,10 @@ const getListingFromIpfs = async (hash: string, type: string): Promise<AnimalLis
     console.log(`${IPFS_NODE}/${hash}`);
     const result = await axios.get(`${IPFS_NODE}/${hash}`);
     const blockAnimal: BlockAnimal = result.data;
-
+    console.log('species', {
+        ...blockAnimal,
+        imageUrl: ''
+    })
     return type === 'lost' ? {
         hash,
         prevHash: blockAnimal.prevhash,
@@ -60,6 +62,7 @@ const getListingFromIpfs = async (hash: string, type: string): Promise<AnimalLis
         hash,
         prevHash: blockAnimal.prevhash,
         species: blockAnimal.species,
+        type: 'found',
         createdAt: new Date(blockAnimal.dateAnunt),
         location: {
             lat: blockAnimal.location.lat,
@@ -68,7 +71,6 @@ const getListingFromIpfs = async (hash: string, type: string): Promise<AnimalLis
         imageUrl: blockAnimal.image,
         solved: false,
         finder: blockAnimal.owner,
-        type: 'found',
         foundAt: new Date(blockAnimal.dateAnunt),
         onlySeen: false
     };

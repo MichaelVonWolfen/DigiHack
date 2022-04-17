@@ -41,7 +41,7 @@ export function ListingCard(props: ListingCardProps) {
                     {props.item.hash && <Text size="xs" color="red">{props.item.hash}</Text>}
                     <Group>
                         <Text weight={700} size="lg">
-                            {props.item.type === 'lost' && props.item.name !== undefined ? `${props.item.name} (${props.item.species})` : props.item.species}
+                            {props.item.type === 'lost' && props.item.name ? `${props.item.name} (${props.item.species})` : props.item.species}
                         </Text>
                         <Text size="lg">
                             {getDistance()}

@@ -11,7 +11,7 @@ import { Divider, Menu, Button } from "@mantine/core";
 export function ProfileDropdown() {
   return (
     <>
-      <Menu control={<Button variant="subtle" color="dark"  type="button">Button control</Button>}>
+      <Menu control={<Button variant="subtle" color="dark"  type="button">Account</Button>}>
         <Menu.Label>Application</Menu.Label>
         <Menu.Item icon={<Settings size={14} />}>Settings</Menu.Item>
         <Menu.Item icon={<MessageCircle size={14} />}>Messages</Menu.Item>

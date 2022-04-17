@@ -11,6 +11,7 @@ import "./createListing.sass"
 import { SPECIES_LIST } from '../../common/animal-species';
 import { useNavigate } from 'react-router-dom';
 import { showNotification } from '@mantine/notifications';
+import { GO_BACKEND } from '../../common/urls';
 
 interface FoundAnimalFormData {
     species: string;
@@ -58,14 +59,12 @@ export default function CreateListing(props: CreateListingProps) {
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [activeStep, setActiveStep] = useState<number>(0);
     const nextStep = () => {
-        console.log(formData)
         setActiveStep((current) => (current < steps.length ? current + 1 : current))
     };
     const navigate = useNavigate();
 
     const onSubmit = async () => {
         // send formData to server'
-        console.log(formData)
         let auth = JSON.parse(localStorage.getItem("auth") || "{}")
         let submitableData = {
             owner: auth.publicKey || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
@@ -80,20 +79,18 @@ export default function CreateListing(props: CreateListingProps) {
             dateAnunt: Date.now(),
             image: formData.imageFile
         }
-        fetch("http://localhost:8080/upload", {
+        fetch(`${GO_BACKEND}/upload`, {
             method: "POST",
             body: JSON.stringify(submitableData)
         }).then(response => {
             response.json().then(data => console.log(data))
-        }
-        )
+        })
     }
 
     const getComponentsPerStep = (stepIndex: number) => {
         switch (stepIndex) {
             case 0:
                 return (<SpeciesPicker selectSpecies={(species) => {
-                    console.log(species)
                     setFormData({
                         ...formData,
                         species
