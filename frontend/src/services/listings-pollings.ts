@@ -1,5 +1,4 @@
 import { AnimalListing } from "../common/animal-listing"
-import { create } from 'ipfs-http-client'
 import { IPFS_NODE } from "../common/urls"
 
 import localForage from "localforage";
@@ -7,35 +6,39 @@ import { BlockAnimal } from "../common/block-animal";
 import { Hashes } from "./hashes-polling";
 import axios from "axios";
 
-export const initListingsPollings = async () => {
+export const initListingsPollings = async (type: string) => {
+    const retrieveListing = async (hash: string, type: string): Promise<boolean> => {
 
-    
-    const retrieveListing = async (hash: string): Promise<void> => {
-
-        const listingItem = await getListingFromIpfs(hash);
+        const listingItem = await getListingFromIpfs(hash, type);
+        console.log(listingItem.prevHash, localStorage.getItem(listingItem.prevHash))
         localForage.setItem(hash, listingItem);
-        await retrieveListing(listingItem.prevHash);
+        if (listingItem.prevHash === 'null' || localStorage.getItem(listingItem.prevHash) === null) {
+            return true;
+        }
+        return await retrieveListing(listingItem.prevHash, type);
     }
 
     while (true) {
-        const hashes = localStorage.getItem('hashes');
-        console.log(hashes);
-        if (hashes === null) {
-            await new Promise(resolve => setTimeout(resolve, 5000)); 
-            continue;
+        const hashesObject = localStorage.getItem('hashes');
+        if (hashesObject === null) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); 
+            return;
         }
 
-        await retrieveListing((JSON.parse(hashes) as Hashes).lastBlock);
+        const hashes: Hashes = JSON.parse(hashesObject);
+        const isDone = await retrieveListing(type === 'lost' ? hashes.lastBlock : hashes.lastFinded, type);
+        if (isDone) {
+            return;
+        }
     }
-
 }
 
-const getListingFromIpfs = async (hash: string): Promise<AnimalListing> => {
+const getListingFromIpfs = async (hash: string, type: string): Promise<AnimalListing> => {
     console.log(`${IPFS_NODE}/${hash}`);
     const result = await axios.get(`${IPFS_NODE}/${hash}`);
     const blockAnimal: BlockAnimal = result.data;
 
-    return blockAnimal.owner === null ? {
+    return type === 'lost' ? {
         hash,
         prevHash: blockAnimal.prevhash,
         species: blockAnimal.species,
@@ -47,7 +50,7 @@ const getListingFromIpfs = async (hash: string): Promise<AnimalListing> => {
         },
         imageUrl: blockAnimal.image,
         solved: false,
-        owner: 'test',
+        owner: blockAnimal.owner,
         lostAt: new Date(blockAnimal.dateLost),
         dangeros: false,
         name: blockAnimal.name,
@@ -56,7 +59,7 @@ const getListingFromIpfs = async (hash: string): Promise<AnimalListing> => {
     } : {
         hash,
         prevHash: blockAnimal.prevhash,
-        species: 'cat',
+        species: blockAnimal.species,
         createdAt: new Date(blockAnimal.dateAnunt),
         location: {
             lat: blockAnimal.location.lat,

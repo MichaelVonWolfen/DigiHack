@@ -1,20 +1,29 @@
-import { Paper, Image, Group, Stack, Text, Badge, Avatar } from '@mantine/core';
-import { AnimalListing, GeoCoordinates } from '../../common/animal-listing';
-import haversine from 'haversine-distance';
-import { Eye, AlertTriangle, CircleCheck } from 'tabler-icons-react';
+import { Paper, Image, Group, Stack, Text, Badge, Avatar, Button } from '@mantine/core';
+import { AnimalListing, AnimalListingWithDistance, GeoCoordinates } from '../../common/animal-listing';
+import { Eye, AlertTriangle, CircleCheck, BrandWhatsapp } from 'tabler-icons-react';
+import { getPhoneNumberForWallet } from '../../services/wallet-service';
+import { useState } from 'react';
 
 export interface ListingCardProps {
-    item: AnimalListing;
+    item: AnimalListingWithDistance;
     currentLocation: GeoCoordinates;
 }
 
 export function ListingCard(props: ListingCardProps) {
 
-    // const [phone, setPhone] = 
+    const [phone, setPhone] = useState<string | undefined>(undefined);
 
-    const getDistance = (): string => {
-        const distanceInMeters = haversine(props.item.location, props.currentLocation);
-        return distanceInMeters > 1000 ? `${(distanceInMeters / 1000).toFixed(2)}km` : `${Math.ceil(distanceInMeters / 10) * 10}m`;
+    const getDistance = (): string | null => {
+        const dist = props.item.distanceInMeters;
+        if (!dist) {
+            return null;
+        }
+        return dist > 1000 ? `${(dist / 1000).toFixed(2)}km` : `${Math.ceil(dist / 10) * 10}m`;
+    }
+
+    const getPhoneNumber = async (): Promise<void> => {
+        const phoneNumber = await getPhoneNumberForWallet(props.item.hash!);
+        setPhone(phoneNumber);
     }
 
     return (
@@ -28,6 +37,7 @@ export function ListingCard(props: ListingCardProps) {
                     withPlaceholder
                 />
                 <Stack>
+                    {props.item.hash && <Text size="xs" color="red">{props.item.hash}</Text>}
                     <Group>
                         <Text weight={700} size="lg">
                             {props.item.type === 'lost' && props.item.name !== undefined ? `${props.item.name} (${props.item.species})` : props.item.species}
@@ -69,6 +79,25 @@ export function ListingCard(props: ListingCardProps) {
                                 }>
                                 Solved
                             </Badge>
+                        }
+                    </Group>
+                    <Group>
+                        {phone
+                            ? <>
+                                <Text>{phone}</Text>
+                                <Button
+                                    component="a"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={`https://api.whatsapp.com/send?phone=${phone}`}
+                                    leftIcon={<BrandWhatsapp size={18} />}
+                                >
+                                    Whatsapp
+                                </Button>
+                            </>
+                            : <Button onClick={() => getPhoneNumber()}>
+                                Contact
+                            </Button>
                         }
                     </Group>
                 </Stack>

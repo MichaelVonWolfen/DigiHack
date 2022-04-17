@@ -1,9 +1,11 @@
 import { Container, Group, Stack, Select, Modal, Button, Center, SegmentedControl, Space } from '@mantine/core';
-import { useState } from 'react';
-import { AnimalListing } from '../../common/animal-listing';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AnimalListing, AnimalListingWithDistance } from '../../common/animal-listing';
 import { SPECIES_LIST } from '../../common/animal-species';
 import { ListingCard } from '../../components/listing-card/listing-card';
 import { LocationPicker } from '../../components/location-picker/location-picker';
+import { getListing } from '../../services/listings-search';
 
 export interface SearchAnimalFormData {
     type?: 'lost' | 'found';
@@ -19,14 +21,18 @@ export interface SearchAnimalFormData {
 
 
 export default function Search() {
-    const [formData, setFormData] = useState<Partial<SearchAnimalFormData>>({
+    const [formData, setFormData] = useState<SearchAnimalFormData>({
         sort: 'datetime',
     });
     const [openedLocationModal, setOpenedLocationModal] = useState(false);
-    const listingItems: AnimalListing[] = [
-        
-    ];
+    const [listingItems, setListingItems] = useState<AnimalListingWithDistance[]>([]);
 
+    const refreshListings = () => {
+        console.log(formData)
+        getListing(formData).then(result => setListingItems(result));
+    }
+    useEffect(() => refreshListings(), [formData])
+    
     return (
         <Container>
             <Modal
@@ -35,7 +41,9 @@ export default function Search() {
                 title="Location of interest"
             >
                 <Center>
-                    <LocationPicker height={320} width={450}
+                    <LocationPicker height={320} width={450} initialPosition={{
+                        lat: 44.43, lng: 26.09
+                    }}
                         setLocation={(lat: number, lng: number) => formData.location = { lat, lng }}
                     />
                 </Center>
@@ -60,7 +68,7 @@ export default function Search() {
                     transitionTimingFunction="linear"
                     onChange={(value) => setFormData({
                         ...formData,
-                        sort: value === 'datetime' || value === 'distance' ? value : undefined
+                        sort: value === 'datetime' || value === 'distance' ? value : 'datetime'
                     })}
                     data={[
                         { value: 'datetime', label: 'Sort by date' },
@@ -69,6 +77,10 @@ export default function Search() {
                 <Select
                     placeholder="Species"
                     clearable
+                    onChange={(value) => setFormData({
+                        ...formData,
+                        species: value ?? undefined
+                    })}
                     data={SPECIES_LIST.map(spec => {
                         return {
                             value: spec.toLowerCase(),
@@ -81,7 +93,7 @@ export default function Search() {
             <Stack>
                 {listingItems.map(item => {
                     return (
-                        <ListingCard item={item} currentLocation={{ lat: 44, lng: 20 }} />
+                        <ListingCard key={item.hash || item.createdAt.toString()} item={item} currentLocation={{ lat: 44, lng: 20 }} />
                     );
                 })}
             </Stack>

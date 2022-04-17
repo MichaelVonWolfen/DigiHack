@@ -1,6 +1,5 @@
 import { GO_BACKEND } from "../common/urls";
 import axios from 'axios';
-import React, { useContext } from "react";
 import { showNotification } from "@mantine/notifications";
 
 
@@ -22,5 +21,5 @@ export const initHashesPolling = () => {
                 message: JSON.stringify(err).substring(0, 160),
               })
         }
-    }, 500);
+    }, 3000);
 }

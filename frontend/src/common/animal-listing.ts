@@ -35,3 +35,7 @@ export type GeoCoordinates = {
     lat: number;
     lng: number;
 }
+
+export type AnimalListingWithDistance = AnimalListing & {
+    distanceInMeters: number | null;
+}

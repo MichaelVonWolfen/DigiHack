@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { DropFileUpload } from '../../components/drop-file-upload/drop-fiile-upload';
 import { LocationPicker } from '../../components/location-picker/location-picker';
 import { SpeciesPicker } from '../../components/species-picker/species-picker';
-import { MediaQuery } from '@mantine/core';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import "./createListing.sass"
+import { SPECIES_LIST } from '../../common/animal-species';
+import { useNavigate } from 'react-router-dom';
+import { showNotification } from '@mantine/notifications';
 
 interface FoundAnimalFormData {
     species: string;
@@ -16,7 +18,7 @@ interface FoundAnimalFormData {
     datetime: Date;
     location: {
         lat: number;
-        lon: number;
+        lng: number;
     };
     race?: string;
     name?: string;
@@ -45,19 +47,30 @@ export interface CreateListingProps {
 }
 
 export default function CreateListing(props: CreateListingProps) {
-    const [formData, setFormData] = useState<Partial<FoundAnimalFormData>>({});
+    const [formData, setFormData] = useState<FoundAnimalFormData>({
+        datetime: new Date(),
+        location: {
+            lat: 44.43, lng: 26.09
+        },
+        imageFile: null,
+        species: SPECIES_LIST[SPECIES_LIST.length - 1]
+    });
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [activeStep, setActiveStep] = useState<number>(0);
-    const nextStep = () => setActiveStep((current) => (current < steps.length ? current + 1 : current));
+    const nextStep = () => {
+        console.log(formData)
+        setActiveStep((current) => (current < steps.length ? current + 1 : current))
+    };
+    const navigate = useNavigate();
 
     const onSubmit = async () => {
         // send formData to server'
         console.log(formData)
         let submitableData = {
             owner: localStorage.getItem("owner") || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
-            cid : localStorage.getItem("cid") || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
+            cid: localStorage.getItem("cid") || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
             location: formData.location,
-            name:formData.name || "",
+            name: formData.name || "",
             description: formData.note || "",
             characteristics: [],
             species: formData.species || "",
@@ -67,11 +80,11 @@ export default function CreateListing(props: CreateListingProps) {
             image: formData.imageFile
         }
         fetch("http://localhost:8080/upload", {
-            method:"POST",
+            method: "POST",
             body: JSON.stringify(submitableData)
-        }).then(response =>{
+        }).then(response => {
             response.json().then(data => console.log(data))
-            }
+        }
         )
     }
 
@@ -79,6 +92,7 @@ export default function CreateListing(props: CreateListingProps) {
         switch (stepIndex) {
             case 0:
                 return (<SpeciesPicker selectSpecies={(species) => {
+                    console.log(species)
                     setFormData({
                         ...formData,
                         species
@@ -106,17 +120,18 @@ export default function CreateListing(props: CreateListingProps) {
                         onChange={(datetime) => {
                             setFormData({
                                 ...formData,
-                                datetime: datetime ?? undefined
+                                datetime: datetime ?? new Date()
                             })
                         }}
                     />
                 </LocalizationProvider>);
             case 3:
                 return (<LocationPicker
-                    width={600} height={400}
+                    initialPosition={formData.location}
+                    width={700} height={460}
                     setLocation={(lat: number, lng: number) => {
                         // @ts-ignore
-                        formData.location = {lat:lat(), lon:lng()}
+                        formData.location = { lat: lat(), lng: lng() }
                     }} />);
             case 4:
                 return (<Stack>
@@ -152,9 +167,11 @@ export default function CreateListing(props: CreateListingProps) {
                 </Stack>);
             default:
                 console.log(formData)
-                return (<Button loading={submitting} size="md" onClick={() => {
+                return (<Button loading={submitting} disabled={submitting} size="md" onClick={() => {
                     setSubmitting(true);
-                    onSubmit().then(() => setSubmitting(false));
+                    onSubmit().then(() => navigate('/search')).catch(e => {
+                        showNotification(e); setSubmitting(false);
+                    });
                 }}>
                     Submit
                 </Button>)
@@ -184,9 +201,9 @@ export default function CreateListing(props: CreateListingProps) {
             {/*    query="(max-width: 770px)"*/}
             {/*    styles={{ gridArea: "text"}}*/}
             {/*>*/}
-                <Center>
-                    {getComponentsPerStep(activeStep)}
-                </Center>
+            <Center>
+                {getComponentsPerStep(activeStep)}
+            </Center>
             {/*</MediaQuery>*/}
             <Group position="center" mt="xl">
                 {

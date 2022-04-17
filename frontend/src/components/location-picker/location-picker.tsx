@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { GOOGLE_MAPS_STYLE } from '../../common/google-maps-styles';
+import { GeoCoordinates } from '../../common/animal-listing';
 
 const GOOGLE_API_KEY = "AIzaSyByFU02ULot1qvCYYJcCs8EAFd_w7FZEjY";
 
@@ -8,6 +9,7 @@ export interface LocationPickerProps {
   setLocation: (lat: number, lng: number) => void;
   width: number;
   height: number;
+  initialPosition: GeoCoordinates;
 }
 
 export function LocationPicker(props: LocationPickerProps) {
@@ -15,9 +17,7 @@ export function LocationPicker(props: LocationPickerProps) {
     <>
       <Wrapper apiKey={GOOGLE_API_KEY}>
         <MapComponent
-          initialPosition={{
-            lat: 44.43, lng: 26.09
-          }}
+          initialPosition={props.initialPosition}
           zoom={15}
           setLocation={(lat: any, lng: any) => props.setLocation(lat, lng)}
           width={props.width}

@@ -27,7 +27,8 @@ const root = ReactDOM.createRoot(
 );
 
 initHashesPolling();
-initListingsPollings();
+initListingsPollings('lost');
+initListingsPollings('found');
 
 root.render(
     <React.StrictMode>

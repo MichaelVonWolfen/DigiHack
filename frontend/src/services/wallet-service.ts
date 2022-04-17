@@ -1,4 +1,4 @@
 
-export const getPhoneNumber = async (hash: string): Promise<void> => {
-    
+export const getPhoneNumberForWallet = async (hash: string): Promise<string> => {
+    return '0726431111'
 }
