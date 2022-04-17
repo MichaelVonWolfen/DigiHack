@@ -19,8 +19,8 @@ export const authStatusContext = React.createContext<{
 
 root.render(
     <React.StrictMode>
-        <MantineProvider>
-            <Navbar />
+        <MantineProvider theme={{ colorScheme: 'light' }}>
+            <Navbar/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />

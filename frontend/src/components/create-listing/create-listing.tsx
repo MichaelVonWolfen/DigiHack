@@ -14,7 +14,7 @@ interface FoundAnimalFormData {
     datetime: Date;
     location: {
         lat: number;
-        lng: number;
+        lon: number;
     };
     race?: string;
     name?: string;
@@ -49,21 +49,54 @@ export default function CreateListing(props: CreateListingProps) {
     const nextStep = () => setActiveStep((current) => (current < steps.length ? current + 1 : current));
 
     const onSubmit = async () => {
-        // send formData to server
+        // send formData to server'
+        console.log(formData)
+        return
+
+        let submitableData = {
+            owner: localStorage.getItem("owner") || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
+            cid : localStorage.getItem("cid") || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
+            location: formData.location,
+            name:formData.name,
+            description: formData.note,
+            characteristics: [],
+            species: formData.species,
+            race: formData.race,
+            dateLost: formData.datetime,
+            dateAnunt: Date.now(),
+            image: formData.imageFile
+        }
+        fetch("http://localhost:8080/upload", {
+            method:"POST",
+            body: JSON.stringify(submitableData)
+        }).then(response =>{
+            response.json().then(data => console.log(data))
+            }
+        )
     }
 
     const getComponentsPerStep = (stepIndex: number) => {
         switch (stepIndex) {
             case 0:
-                return (<SpeciesPicker selectSpecies={(species) => setFormData({
-                    ...formData,
-                    species
-                })} />);
+                return (<SpeciesPicker selectSpecies={(species) => {
+                    setFormData({
+                        ...formData,
+                        species
+                    })
+                    setActiveStep(activeStep + 1)
+                }} />);
             case 1:
-                return (<DropFileUpload setFile={(file) => setFormData({
-                    ...formData,
-                    imageFile: file
-                })} />);
+                return (<DropFileUpload setFile={async (file) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFormData({
+                            ...formData,
+                            // @ts-ignore
+                            imageFile: reader.result
+                        })
+                    };
+                    await reader.readAsDataURL(file);
+                }} />);
             case 2:
                 return (<LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
@@ -81,7 +114,10 @@ export default function CreateListing(props: CreateListingProps) {
             case 3:
                 return (<LocationPicker
                     width={600} height={400}
-                    setLocation={(lat: number, lng: number) => formData.location = {lat, lng}} />);
+                    setLocation={(lat: number, lng: number) => {
+                        // @ts-ignore
+                        formData.location = {lat:lat(), lon:lng()}
+                    }} />);
             case 4:
                 return (<Stack>
                     <Text>
@@ -115,6 +151,7 @@ export default function CreateListing(props: CreateListingProps) {
                     />
                 </Stack>);
             default:
+                console.log(formData)
                 return (<Button loading={submitting} size="md" onClick={() => {
                     setSubmitting(true);
                     onSubmit().then(() => setSubmitting(false));
@@ -147,7 +184,10 @@ export default function CreateListing(props: CreateListingProps) {
                 {getComponentsPerStep(activeStep)}
             </Center>
             <Group position="center" mt="xl">
-                <Button onClick={nextStep}>Next step</Button>
+                {
+                    activeStep !== 0 && activeStep !== 5 &&
+                    <Button onClick={nextStep}>Next step</Button>
+                }
             </Group>
         </Container>
     );
