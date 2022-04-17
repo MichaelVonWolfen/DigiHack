@@ -9,6 +9,8 @@ func ServerStart() {
 	http.HandleFunc("/upload", controller.UploadController)
 	http.HandleFunc("/createWallet", controller.CreateWallet)
 	http.HandleFunc("/viewWallet", controller.ViewWallet)
+	http.HandleFunc("/findedAnimal", controller.FindedAnimal)
 
+	http.HandleFunc("/getLastHashAnimal", controller.GelastHashes)
 	http.ListenAndServe(":8080", nil)
 }
