@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <MantineProvider theme={{ colorScheme: 'dark' }}>
+        <MantineProvider theme={{ colorScheme: 'light' }}>
             <Navbar/>
             <BrowserRouter>
                 <Routes>
