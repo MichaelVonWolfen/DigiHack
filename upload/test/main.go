@@ -80,3 +80,13 @@ func main() {
 	json.Unmarshal([]byte(newStr), &res)
 	fmt.Println(res)
 }
+
+{
+"phone":"
+
+"publicKey": "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
+"privateKey": "bfc9504a1cd7104cdd0277f87a1316d9739946dbc401399a3c6d57bb8295a5f7cbb91836c8609ca30c537e3749845b69333790ce05b2086941418a154a974170",
+"prevHash": "QmbDvgpwVGMv9sQqbJZiUZXYSSiu1cnppUyb27isCXEkRa",
+"currentHash": "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
+"secretKey": "bfc9504a1cd7104cdd0277f87a"
+}

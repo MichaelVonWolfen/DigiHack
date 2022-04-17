@@ -4,7 +4,7 @@ import "fmt"
 
 func ValidatePublicKeyAddingDataUser(checkIfExistPublicKey string, cid string) int {
 
-	dataWallet := readDataIpfsWallet(cid)
+	dataWallet := ReadDataIpfsWallet(cid)
 	fmt.Println("data:", dataWallet)
 
 	if len(dataWallet.PrevHash) < 20 {

@@ -23,7 +23,7 @@ func CreateWallet(w http.ResponseWriter, req *http.Request) {
 	if len(userWallet.Phone) > 0 {
 		if len(userWallet.Pass) > 0 {
 
-			privateKey := services.GeneratePrivateKey(userWallet.Phone + userWallet.Pass)
+			privateKey := services.GeneratePrivateKey(userWallet.Pass)
 			publicKey := services.GeneratePubKey(privateKey)
 			plaintext := []byte(userWallet.Phone)
 			secretkey := []byte(privateKey[0:26])
@@ -34,7 +34,8 @@ func CreateWallet(w http.ResponseWriter, req *http.Request) {
 			blockWallet.PublicKey = publicKey
 			blockWallet.Phone = string(encryptedPhoneNumber)
 			lastSaveHash := services.ReadFileLastWallet()
-			if services.VerifyPublicKey(publicKey, lastSaveHash) == 0 {
+			_, check := services.VerifyPublicKey(publicKey, lastSaveHash)
+			if check == 0 {
 				blockWallet.PrevHash = lastSaveHash
 				getData := services.PutDataIpfsWallet(blockWallet)
 				services.CreateFileWallet(getData)

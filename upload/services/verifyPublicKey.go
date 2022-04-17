@@ -2,7 +2,7 @@ package services
 
 import "fmt"
 
-func VerifyPublicKey(checkIfExistPublicKey string, cid string) int {
+func VerifyPublicKey(checkIfExistPublicKey string, cid string) (string, int) {
 	/*resp, err := http.Get("https://ipfs.infura.io/ipfs/" + url)
 	if err != nil {
 		log.Fatalln(err)
@@ -20,16 +20,16 @@ func VerifyPublicKey(checkIfExistPublicKey string, cid string) int {
 		json.Unmarshal(body, wallet)
 		fmt.Println()*/
 	for {
-		dataWallet := readDataIpfsWallet(cid)
+		dataWallet := ReadDataIpfsWallet(cid)
 		if len(dataWallet.PrevHash) < 20 {
 			fmt.Println("founded")
-			return 0
+			return "", 0
 		}
 		if dataWallet.PublicKey == checkIfExistPublicKey {
 			fmt.Println(dataWallet.PublicKey, checkIfExistPublicKey)
-			return 1
+			return cid, 1
 		}
 		cid = dataWallet.PrevHash
 	}
-	return 0
+	return "", 0
 }
