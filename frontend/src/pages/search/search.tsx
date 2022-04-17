@@ -1,7 +1,8 @@
 import { Container, Group, Stack, Select, Modal, Button, Center, SegmentedControl, Space } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AnimalListing, AnimalListingWithDistance } from '../../common/animal-listing';
+import { Refresh } from 'tabler-icons-react';
+import { AnimalListing, AnimalListingWithDistance, GeoCoordinates } from '../../common/animal-listing';
 import { SPECIES_LIST } from '../../common/animal-species';
 import { ListingCard } from '../../components/listing-card/listing-card';
 import { LocationPicker } from '../../components/location-picker/location-picker';
@@ -24,7 +25,10 @@ export default function Search() {
     const [formData, setFormData] = useState<SearchAnimalFormData>({
         sort: 'datetime',
     });
-    const [openedLocationModal, setOpenedLocationModal] = useState(false);
+    const [openedLocationModal, setOpenedLocationModal] = useState<boolean>(false);
+    const [openedPetLocationModal, setPetOpenedLocationModal] = useState<boolean>(false);
+    const [selectedPet, setSelectedPet] = useState<number | null>(null);
+
     const [listingItems, setListingItems] = useState<AnimalListingWithDistance[]>([]);
 
     const refreshListings = () => {
@@ -32,13 +36,39 @@ export default function Search() {
         getListing(formData).then(result => setListingItems(result));
     }
     useEffect(() => refreshListings(), [formData])
-    
+
+    const getSelectedListingLocation = (): GeoCoordinates | null => {
+        const pet = listingItems.filter((_, index) => index === selectedPet)[0];
+        if (pet === undefined) {
+            return null;
+        }
+        return pet.location;
+    }
+
+    const showOnMapPerRow = (idx: number) => {
+        return () => {
+            setSelectedPet(idx);
+            setPetOpenedLocationModal(true);
+        }
+    }
+
     return (
         <Container>
             <Modal
                 opened={openedLocationModal}
                 onClose={() => setOpenedLocationModal(false)}
                 title="Location of interest"
+            >
+                <Center>
+                    <LocationPicker height={320} width={450} initialPosition={getSelectedListingLocation() ?? {lat: 0, lng: 0}}
+                        setLocation={(lat: number, lng: number) => formData.location = { lat, lng }}
+                    />
+                </Center>
+            </Modal>
+            <Modal
+                opened={openedPetLocationModal}
+                onClose={() => setPetOpenedLocationModal(false)}
+                title='Last seen location'
             >
                 <Center>
                     <LocationPicker height={320} width={450} initialPosition={{
@@ -88,12 +118,18 @@ export default function Search() {
                         };
                     })} />
                 <Button onClick={() => setOpenedLocationModal(true)}>Location</Button>
+                <Button onClick={() => refreshListings()}>
+                    <Refresh
+                        size={26}
+                        strokeWidth={2}
+                    />
+                </Button>
             </Group>
             <Space h="xl" />
             <Stack>
-                {listingItems.map(item => {
+                {listingItems.map((item, index) => {
                     return (
-                        <ListingCard key={item.hash || item.createdAt.toString()} item={item} currentLocation={{ lat: 44, lng: 20 }} />
+                        <ListingCard showOnMap={showOnMapPerRow(index)} key={item.hash || item.createdAt.toString()} item={item} currentLocation={{ lat: 44, lng: 20 }} />
                     );
                 })}
             </Stack>

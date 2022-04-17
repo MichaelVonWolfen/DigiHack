@@ -1,12 +1,13 @@
 import { Paper, Image, Group, Stack, Text, Badge, Avatar, Button } from '@mantine/core';
 import { AnimalListing, AnimalListingWithDistance, GeoCoordinates } from '../../common/animal-listing';
-import { Eye, AlertTriangle, CircleCheck, BrandWhatsapp } from 'tabler-icons-react';
+import { Eye, AlertTriangle, CircleCheck, BrandWhatsapp, BrandAndroid, BrandApple } from 'tabler-icons-react';
 import { getPhoneNumberForWallet } from '../../services/wallet-service';
 import { useState } from 'react';
 
 export interface ListingCardProps {
     item: AnimalListingWithDistance;
     currentLocation: GeoCoordinates;
+    showOnMap: () => void;
 }
 
 export function ListingCard(props: ListingCardProps) {
@@ -84,7 +85,9 @@ export function ListingCard(props: ListingCardProps) {
                     <Group>
                         {phone
                             ? <>
-                                <Text>{phone}</Text>
+                                <Button component="a" href={`tel:${phone}`} leftIcon={<BrandAndroid size={18}/>} rightIcon={<BrandApple size={18} />}>
+                                    Call on Phone
+                                </Button>
                                 <Button
                                     component="a"
                                     target="_blank"
@@ -99,6 +102,9 @@ export function ListingCard(props: ListingCardProps) {
                                 Contact
                             </Button>
                         }
+                        <Button onClick={() => props.showOnMap()}>
+                            Show on map
+                        </Button>
                     </Group>
                 </Stack>
             </Group>
