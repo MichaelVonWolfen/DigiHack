@@ -23,10 +23,15 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 		if len(userWallet.Pass) > 0 {
 			privateKey := services.GeneratePrivateKey(userWallet.Pass)
 			publicKey := services.GeneratePubKey(privateKey)
-			
+
 			secretkey := []byte(privateKey[0:26])
 			cidSave, check := services.VerifyPublicKey(publicKey, lastSaveHash)
 			if check == 0 {
+				retError := models.UploadModelResponse{}
+				retError.Error = 200
+				retError.Message = "Already created"
+				json.NewEncoder(w).Encode(retError)
+			} else {
 				blockWallet.PrevHash = lastSaveHash
 				getData := services.ReadDataIpfsWallet(cidSave)
 				blockReturn.PublicKey = publicKey
@@ -36,11 +41,7 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 				blockReturn.PrevHash = getData.PrevHash
 				blockReturn.SecretKey = string(secretkey)
 				json.NewEncoder(w).Encode(blockReturn)
-			} else {
-				retError := models.UploadModelResponse{}
-				retError.Error = 200
-				retError.Message = "Already created"
-				json.NewEncoder(w).Encode(retError)
+
 			}
 		}
 	}
