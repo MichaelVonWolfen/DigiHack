@@ -38,7 +38,7 @@ export default function Home(){
                 <CountUp className={"counter"}
                     end={2123543}
                     separator={"."}
-                    duration={120}
+                    duration={60}
                 />
                 <span className="right">pets!</span>
             </div>
