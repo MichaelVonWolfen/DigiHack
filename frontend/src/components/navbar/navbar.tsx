@@ -3,6 +3,8 @@ import logo from "../../assets/placeholder.png"
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Auth } from "../auth/auth";
+import { Button } from "@mantine/core";
+
 export default function () {
     const mobileChangeState = () => {
         let mobileNav = document.getElementById("mobile_nav")
@@ -12,11 +14,29 @@ export default function () {
 
     const getNavbarLinks = () => {
         return (<>
-            <li><a href="/">Home</a></li>
-            <li><a href="/lost">Lost a Pet</a></li>
-            <li><a href="/found">Found a pet</a></li>
-            <li><a href="/search">Search for a pet</a></li>
-            <li><Auth /></li>
+            <li>
+                <Button component="a" href="/">
+                    Home
+                </Button>
+            </li>
+            <li>
+                <Button component="a" href="/lost">
+                    Lost a Pet
+                </Button>
+            </li>
+            <li>
+                <Button component="a" href="/found">
+                    Found a pet
+                </Button>
+            </li>
+            <li>
+                <Button component="a" href="/search">
+                    Search for a pet
+                </Button>
+            </li>
+            <li>
+                <Auth />
+            </li>
         </>);
     }
 

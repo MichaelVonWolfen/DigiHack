@@ -1,0 +1,24 @@
+POST http://localhost:8080/upload
+Content-Type: application/json
+
+{
+    "owner":"d1d52fb30c02718c6f8ccf9559ba674271fc82b7cf10c9e903561af704ca4018c216d992833765cf9833129fb6b6fba5a36a0ea726cd69ec227a08ec1c1979f9",
+    "cid":"QmQDyBE822QbHm7U3Vsh2gb4hwHCBrvmBBS6J1tvJLMHCA",
+	"image":"image/url",
+	"description":"abfohweov pqehdo asjo pfiasod;",
+	"location" : {
+		"lat":14.1,
+		"lon":1.4
+	} ,
+	"name":"marius",
+	"species":"caine",
+	"rase":"canin",
+	"characteristics":["roz"],
+	"dateLost":"",
+	"dateAnunt":"12-12-31"
+}
+
+###
+
+GET http://localhost:8080/getLastHashAnimal
+Content-Type: application/json

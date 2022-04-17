@@ -2,12 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { Home, Navbar } from "./pages/index"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { MantineProvider } from "@mantine/core";
+import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
+import { Affix, AppShell, Button, UnstyledButton, Image, Group, Header, MantineProvider } from "@mantine/core";
 import "./reset.scss"
 import Lost from './pages/lost/lost';
 import Found from './pages/found/found';
 import Search from './pages/search/search';
+import { Auth } from './components/auth/auth';
+import {
+    NotificationsProvider,
+    showNotification,
+} from "@mantine/notifications";
+import MenuIcon from '@mui/icons-material/Menu';
+import logo from "./assets/placeholder.png"
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -19,16 +27,46 @@ export const authStatusContext = React.createContext<{
 
 root.render(
     <React.StrictMode>
-        <MantineProvider theme={{ colorScheme: 'light' }}>
-            <Navbar/>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/lost" element={<Lost />} />
-                    <Route path="/found" element={<Found />} />
-                    <Route path="/search" element={<Search />} />
-                </Routes>
-            </BrowserRouter>
+        <MantineProvider theme={{ colorScheme: 'dark' }}>
+            <NotificationsProvider position="top-right" zIndex={2077}>
+                <AppShell
+                    padding="md"
+                    header={
+                        <Header height={70} p="xs">
+                            <Group position="apart">
+                                <UnstyledButton component="a" href="/">
+                                    <Image
+                                        radius="md"
+                                        src={logo}
+                                        alt="Random unsplash image"
+                                        width={50} height={50}
+                                    />
+                                </UnstyledButton>
+                                <Group position="right">
+                                    <Button component="a" href="/lost">
+                                        Lost a Pet
+                                    </Button>
+                                    <Button component="a" href="/found">
+                                        Found a pet
+                                    </Button>
+                                    <Button component="a" href="/search">
+                                        Search for a pet
+                                    </Button>
+                                    <Auth />
+                                </Group>
+                            </Group>
+                        </Header>
+                    }>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/lost" element={<Lost />} />
+                            <Route path="/found" element={<Found />} />
+                            <Route path="/search" element={<Search />} />
+                        </Routes>
+                    </BrowserRouter>
+                </AppShell>
+            </NotificationsProvider>
         </MantineProvider>
     </React.StrictMode>
 );

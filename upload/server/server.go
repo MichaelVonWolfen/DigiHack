@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 	"upload-digihack/controller"
 )
@@ -12,5 +13,7 @@ func ServerStart() {
 	http.HandleFunc("/findedAnimal", controller.FindedAnimal)
 
 	http.HandleFunc("/getLastHashAnimal", controller.GelastHashes)
-	http.ListenAndServe(":8080", nil)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println(err)
+	}
 }
