@@ -50,6 +50,21 @@ export function AuthForm() {
       });
       if (result.error === undefined) {
         localStorage.setItem('auth', JSON.stringify(result));
+        console.log(result.data)
+        if(!result.data.error){
+          showNotification({
+            title:"Succes!",
+            message:"You are logged IN."
+          })
+          setTimeout(()=>{
+            window.location.href = "/"
+          }, 1000)
+        }else{
+          showNotification({
+            title:"Ooops!",
+            message:result.data.message
+          })
+        }
       }
     } catch (err) {
       showNotification({
@@ -61,11 +76,23 @@ export function AuthForm() {
 
   const register = async (phoneNumber: string, password: string) => {
     try {
-      const result: WalletCreateReturn = await axios.post(`${GO_BACKEND}/createWallet`, {
+      const result: any = await axios.post(`${GO_BACKEND}/createWallet`, {
         phone: phoneNumber,
         pass: password
       });
-      localStorage.setItem('auth', JSON.stringify(result));
+      localStorage.setItem('auth', JSON.stringify(result.data));
+      console.log(result.data)
+      if(!result.data.error){
+        showNotification({
+          title:"Succes!",
+          message:"Account Created!"
+        })
+      }else{
+        showNotification({
+          title:"Ooops!",
+          message:result.data.message
+        })
+      }
     } catch (err) {
       showNotification({
         title: 'Failed to create wallet',

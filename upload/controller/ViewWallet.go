@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "fmt"
 	"encoding/json"
 	"net/http"
 	"upload-digihack/models"
@@ -19,14 +20,20 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 	userWalletCreate := json.NewDecoder(req.Body)
 	userWalletCreate.Decode(&userWallet)
 	lastSaveHash := services.ReadFileLastWallet()
+	fmt.Println(userWallet)
 	if len(userWallet.Phone) > 0 {
 		if len(userWallet.Pass) > 0 {
 			privateKey := services.GeneratePrivateKey(userWallet.Pass)
 			publicKey := services.GeneratePubKey(privateKey)
-			
+
 			secretkey := []byte(privateKey[0:26])
 			cidSave, check := services.VerifyPublicKey(publicKey, lastSaveHash)
 			if check == 0 {
+				retError := models.UploadModelResponse{}
+				retError.Error = 200
+				retError.Message = "Already created"
+				json.NewEncoder(w).Encode(retError)
+			} else {
 				blockWallet.PrevHash = lastSaveHash
 				getData := services.ReadDataIpfsWallet(cidSave)
 				blockReturn.PublicKey = publicKey
@@ -35,12 +42,10 @@ func ViewWallet(w http.ResponseWriter, req *http.Request) {
 				blockReturn.CurrentHash = cidSave
 				blockReturn.PrevHash = getData.PrevHash
 				blockReturn.SecretKey = string(secretkey)
+                fmt.Println(blockReturn)
+                fmt.Println("a erjfdn brlka nadoi heio[o niatnbal'terj hoi trtsl hstroo8]")
 				json.NewEncoder(w).Encode(blockReturn)
-			} else {
-				retError := models.UploadModelResponse{}
-				retError.Error = 200
-				retError.Message = "Already created"
-				json.NewEncoder(w).Encode(retError)
+
 			}
 		}
 	}
