@@ -51,17 +51,15 @@ export default function CreateListing(props: CreateListingProps) {
     const onSubmit = async () => {
         // send formData to server'
         console.log(formData)
-        return
-
         let submitableData = {
             owner: localStorage.getItem("owner") || "063a552e3e4548df1870b7fbc548065018b89652c31f81d514f2edc8c14b6eb1c69edc9f1a64caf1986bbbb56ef95fca307474520e5cee51288dbbd7152fbd58",
             cid : localStorage.getItem("cid") || "QmQXHejvtQF1p5X1NogXnfGHHmGe8upxicTodK1dknaRLq",
             location: formData.location,
-            name:formData.name,
-            description: formData.note,
+            name:formData.name || "",
+            description: formData.note || "",
             characteristics: [],
-            species: formData.species,
-            race: formData.race,
+            species: formData.species || "",
+            race: formData.race || "",
             dateLost: formData.datetime,
             dateAnunt: Date.now(),
             image: formData.imageFile

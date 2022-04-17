@@ -19,7 +19,7 @@ export function LocationPicker(props: LocationPickerProps) {
             lat: 44.43, lng: 26.09
           }}
           zoom={15}
-          setLocation={(lat: number, lng: number) => props.setLocation(lat, lng)}
+          setLocation={(lat: any, lng: any) => props.setLocation(lat, lng)}
           width={props.width}
           height={props.height}
         />
@@ -31,7 +31,7 @@ export function LocationPicker(props: LocationPickerProps) {
 export interface MapComponentProps {
   initialPosition: google.maps.LatLngLiteral;
   zoom: number;
-  setLocation: (lat: number, lng: number) => void;
+  setLocation: (lat: () => number, lng: () => number) => void;
   width: number;
   height: number;
 }
@@ -51,7 +51,11 @@ function MapComponent({ initialPosition, zoom, setLocation, width, height }: Map
       map,
       title: "Hello World!",
     });
-
+    setLocation(() => {
+      return 0
+    }, () => {
+      return 0
+    });
     map.addListener('click', (e: any) => {
       marker.setPosition(e.latLng);
       setLocation(e.latLng.lat, e.latLng.lng);
