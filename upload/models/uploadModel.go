@@ -2,6 +2,7 @@ package models
 
 type UploadModel struct {
 	Owner       string `json:"owner"`
+	Cid         string `json:"cid"`
 	Image       string `json:"image"`
 	Description string `json:"description"`
 	Location    struct {

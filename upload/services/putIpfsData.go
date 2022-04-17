@@ -10,7 +10,7 @@ import (
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
-func PutDataIpfsAnimal(animal models.BlockAnimal, wallet models.BlockWallet) string {
+func PutDataIpfsAnimal(animal models.BlockAnimal) string {
 	sh := shell.NewShell("https://ipfs.infura.io:5001")
 
 	tsdBin, _ := json.Marshal(animal)
