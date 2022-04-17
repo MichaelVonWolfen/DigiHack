@@ -15,22 +15,22 @@ export default function () {
     const getNavbarLinks = () => {
         return (<>
             <li>
-                <Button component="a" href="/">
+                <Button variant="subtle" color="dark" component="a" href="/">
                     Home
                 </Button>
             </li>
             <li>
-                <Button component="a" href="/lost">
+                <Button variant="subtle" color="dark" component="a" href="/lost">
                     Lost a Pet
                 </Button>
             </li>
             <li>
-                <Button component="a" href="/found">
+                <Button variant="subtle" color="dark" component="a" href="/found">
                     Found a pet
                 </Button>
             </li>
             <li>
-                <Button component="a" href="/search">
+                <Button variant="subtle" color="dark" component="a" href="/search">
                     Search for a pet
                 </Button>
             </li>
@@ -45,10 +45,10 @@ export default function () {
             <a href="/"><img src={logo} alt="Site Logo" /></a>
             <ul className={"computer"}>
                 {getNavbarLinks()}
-                <MenuIcon className={"hamburgerMenu"} onClick={mobileChangeState} />
+                <MenuIcon className={"hamburgerMenu"} onClick={mobileChangeState} style={{color:"white"}}/>
             </ul>
             <ul className={"mobile hidden"} id={"mobile_nav"}>
-                <CloseIcon className={"closeIcon"} onClick={mobileChangeState} />
+                <CloseIcon className={"closeIcon"} onClick={mobileChangeState} style={{color:"white"}}/>
                 {getNavbarLinks()}
             </ul>
         </div>

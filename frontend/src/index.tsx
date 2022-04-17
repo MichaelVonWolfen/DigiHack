@@ -15,6 +15,7 @@ import {
 } from "@mantine/notifications";
 import logo from "./assets/placeholder.png"
 import Background from "./components/background/background";
+import MenuIcon from '@mui/icons-material/Menu';
 // import Background from "./components/background2/background";
 // import Background from "./components/background3/background";
 
@@ -32,34 +33,35 @@ root.render(
         <Background/>
         <MantineProvider theme={{ colorScheme: 'dark' }}>
             <NotificationsProvider position="top-right" zIndex={2077}>
-                <AppShell
-                    padding="md"
-                    header={
-                        <Header height={70} p="xs">
-                            <Group position="apart">
-                                <UnstyledButton component="a" href="/">
-                                    <Image
-                                        radius="md"
-                                        src={logo}
-                                        alt="Random unsplash image"
-                                        width={50} height={50}
-                                    />
-                                </UnstyledButton>
-                                <Group position="right">
-                                    <Button component="a" href="/lost">
-                                        Lost a Pet
-                                    </Button>
-                                    <Button component="a" href="/found">
-                                        Found a pet
-                                    </Button>
-                                    <Button component="a" href="/search">
-                                        Search for a pet
-                                    </Button>
-                                    <Auth />
-                                </Group>
-                            </Group>
-                        </Header>
-                    }>
+                {/*<AppShell*/}
+                {/*    padding="md"*/}
+                {/*    header={*/}
+                {/*        <Header height={70} p="xs">*/}
+                {/*            <Group position="apart">*/}
+                {/*                <UnstyledButton component="a" href="/">*/}
+                {/*                    <Image*/}
+                {/*                        radius="md"*/}
+                {/*                        src={logo}*/}
+                {/*                        alt="Random unsplash image"*/}
+                {/*                        width={50} height={50}*/}
+                {/*                    />*/}
+                {/*                </UnstyledButton>*/}
+                {/*                <Group position="right" className={"navButtons"}>*/}
+                {/*                    <Button variant="subtle" color="dark" component="a" href="/lost">*/}
+                {/*                        Lost*/}
+                {/*                    </Button>*/}
+                {/*                    <Button variant="subtle" color="dark" component="a" href="/found">*/}
+                {/*                        Found*/}
+                {/*                    </Button>*/}
+                {/*                    <Button variant="subtle" color="dark" component="a" href="/search">*/}
+                {/*                        Search*/}
+                {/*                    </Button>*/}
+                {/*                    <Auth />*/}
+                {/*                </Group>*/}
+                {/*            </Group>*/}
+                {/*        </Header>*/}
+                {/*    }>*/}
+                <Navbar/>
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<Home />} />
@@ -68,7 +70,7 @@ root.render(
                             <Route path="/search" element={<Search />} />
                         </Routes>
                     </BrowserRouter>
-                </AppShell>
+                {/*</AppShell>*/}
             </NotificationsProvider>
         </MantineProvider>
     </React.StrictMode>

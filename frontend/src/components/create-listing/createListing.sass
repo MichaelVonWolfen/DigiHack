@@ -1,0 +1,27 @@
+.containerLostFound
+  background-color: #1a1b1e
+  border-radius: 5px
+  margin: 20px auto
+  display: grid
+  place-content: center
+  grid-template-areas: "steps" "text" "options"
+  //.mantine-Stepper-content>.text
+  //  grid-area: text
+  .stepper
+    display: grid
+    place-content: center
+    margin: 30px 0
+    grid-area: steps
+    //min-width: 100vw
+    //align-items: center
+    //justify-content: center
+  &>*
+    color: #FFFFFF
+    //display: flex
+    //justify-content: center
+    //align-items: center
+@media screen and (max-width: 775px)
+  .containerLostFound
+    grid-template-areas: "text" "options" "steps"
+    .stepper
+      flex-direction: column-reverse

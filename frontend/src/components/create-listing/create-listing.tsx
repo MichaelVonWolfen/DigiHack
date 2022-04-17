@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { DropFileUpload } from '../../components/drop-file-upload/drop-fiile-upload';
 import { LocationPicker } from '../../components/location-picker/location-picker';
 import { SpeciesPicker } from '../../components/species-picker/species-picker';
+import { MediaQuery } from '@mantine/core';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import "./createListing.sass"
 
 interface FoundAnimalFormData {
     species: string;
@@ -160,12 +162,12 @@ export default function CreateListing(props: CreateListingProps) {
     }
 
     return (
-        <Container>
-            <Stepper active={activeStep} breakpoint="sm">
+        <Container className={"containerLostFound"}>
+            <Stepper active={activeStep} breakpoint="sm" className={"stepper"}>
                 {steps.map(step => {
                     return (
                         <Stepper.Step key={step.name} label={step.name} allowStepSelect={false}>
-                            <Center>
+                            <Center className={"text"}>
                                 {step.message}
                             </Center>
                         </Stepper.Step>
@@ -178,9 +180,14 @@ export default function CreateListing(props: CreateListingProps) {
                 </Stepper.Completed>
             </Stepper>
             <Space h="xl" />
-            <Center>
-                {getComponentsPerStep(activeStep)}
-            </Center>
+            {/*<MediaQuery*/}
+            {/*    query="(max-width: 770px)"*/}
+            {/*    styles={{ gridArea: "text"}}*/}
+            {/*>*/}
+                <Center>
+                    {getComponentsPerStep(activeStep)}
+                </Center>
+            {/*</MediaQuery>*/}
             <Group position="center" mt="xl">
                 {
                     activeStep !== 0 && activeStep !== 5 &&

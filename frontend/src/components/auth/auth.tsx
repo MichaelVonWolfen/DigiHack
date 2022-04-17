@@ -21,7 +21,7 @@ export function Auth() {
           >
             <AuthForm/>
           </Modal>
-          <Button onClick={() => setOpened(true)}>Authenticate</Button>
+          <Button variant="subtle" color="dark" onClick={() => setOpened(true)}>Authenticate</Button>
         </>
       )}
     </>
