@@ -13,8 +13,10 @@ import {
     NotificationsProvider,
     showNotification,
 } from "@mantine/notifications";
-import MenuIcon from '@mui/icons-material/Menu';
 import logo from "./assets/placeholder.png"
+import Background from "./components/background/background";
+// import Background from "./components/background2/background";
+// import Background from "./components/background3/background";
 
 
 const root = ReactDOM.createRoot(
@@ -27,6 +29,7 @@ export const authStatusContext = React.createContext<{
 
 root.render(
     <React.StrictMode>
+        <Background/>
         <MantineProvider theme={{ colorScheme: 'dark' }}>
             <NotificationsProvider position="top-right" zIndex={2077}>
                 <AppShell
