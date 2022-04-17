@@ -54,7 +54,7 @@ function MapComponent({ initialPosition, zoom, setLocation, width, height }: Map
 
     map.addListener('click', (e: any) => {
       marker.setPosition(e.latLng);
-      setLocation(e.latLng.lat, e.latLng.lng);
+      setLocation(e.latLng.lat(), e.latLng.lng());
     });
   });
 
