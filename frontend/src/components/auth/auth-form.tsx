@@ -8,8 +8,11 @@ import {
   Group,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useContext } from "react";
+import { showNotification } from "@mantine/notifications";
+import axios from "axios";
 import { Phone } from 'tabler-icons-react';
+import { GO_BACKEND } from "../../common/urls";
+import { WalletCreateReturn } from "../../common/wallet-models";
 
 export function AuthForm() {
   const loginForm = useForm({
@@ -39,12 +42,36 @@ export function AuthForm() {
   });
 
 
-  const login = async (username: string, password: string) => {
-    // const success = await services.auth.logIn(username, password);
+  const login = async (phoneNumber: string, password: string) => {
+    try {
+      const result: any = await axios.post(`${GO_BACKEND}/viewWallet`, {
+        phone: phoneNumber,
+        pass: password
+      });
+      if (result.error === undefined) {
+        localStorage.setItem('auth', JSON.stringify(result));
+      }
+    } catch (err) {
+      showNotification({
+        title: 'Failed to create wallet',
+        message: JSON.stringify(err).substring(0, 160),
+      })
+    }
   }
 
-  const register = async (username: string, password: string) => {
-    // const success = await services.auth.register(username, password);
+  const register = async (phoneNumber: string, password: string) => {
+    try {
+      const result: WalletCreateReturn = await axios.post(`${GO_BACKEND}/createWallet`, {
+        phone: phoneNumber,
+        pass: password
+      });
+      localStorage.setItem('auth', JSON.stringify(result));
+    } catch (err) {
+      showNotification({
+        title: 'Failed to create wallet',
+        message: JSON.stringify(err).substring(0, 160),
+      })
+    }
   }
 
   return (

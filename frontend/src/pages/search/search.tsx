@@ -5,7 +5,7 @@ import { SPECIES_LIST } from '../../common/animal-species';
 import { ListingCard } from '../../components/listing-card/listing-card';
 import { LocationPicker } from '../../components/location-picker/location-picker';
 
-interface SearchAnimalFormData {
+export interface SearchAnimalFormData {
     type?: 'lost' | 'found';
     species?: string;
     before?: Date;
@@ -24,36 +24,7 @@ export default function Search() {
     });
     const [openedLocationModal, setOpenedLocationModal] = useState(false);
     const listingItems: AnimalListing[] = [
-        {
-            species: 'dog',
-            type: 'lost',
-            createdAt: new Date(),
-            location: {
-                lat: 44.05, 
-                lng: 20.01
-            },
-            imageUrl: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*',
-            solved: true,
-            owner: 'test',
-            lostAt: new Date(),
-            dangeros: true,
-            name: 'Rusty',
-            race: 'German Shepard',
-            note: 'Good boy'
-        }, {
-            species: 'cat',
-            createdAt: new Date(),
-            location: {
-                lat: 44.06, 
-                lng: 20.09
-            },
-            imageUrl: 'https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=900.0&fit=crop',
-            solved: false,
-            finder: 'test',
-            type: 'found',
-            foundAt: new Date(),
-            onlySeen: true
-        }
+        
     ];
 
     return (

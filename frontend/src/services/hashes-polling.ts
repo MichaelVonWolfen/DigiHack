@@ -10,13 +10,12 @@ export interface Hashes {
     lastFinded: string;
 }
 
-
-export const initPolling = () => {
+export const initHashesPolling = () => {
 
     setInterval(async () => {
         try {
-            const hashes = await axios.get(`${GO_BACKEND}/getLastHashAnimal`);
-            localStorage.setItem('hashes', JSON.stringify(hashes));
+            const response = await axios.get(`${GO_BACKEND}/getLastHashAnimal`);
+            localStorage.setItem('hashes', JSON.stringify(response.data));
         } catch (err) {
             showNotification({
                 title: 'Hashes could not be retrieved',

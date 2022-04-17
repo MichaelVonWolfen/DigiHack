@@ -2,6 +2,8 @@
 export type AnimalListing = LostAnimalListing | FoundAnimalListing;
 
 export type CommonAnimalListingTraits = {
+    hash?: string;
+    prevHash: string;
     species: string;
     type: 'lost' | 'found';
     createdAt: Date;

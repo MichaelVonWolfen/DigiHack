@@ -15,15 +15,16 @@ import {
 } from "@mantine/notifications";
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from "./assets/placeholder.png"
+import { initHashesPolling } from './services/hashes-polling';
+import { initListingsPollings } from './services/listings-pollings';
 
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-export const authStatusContext = React.createContext<{
-    phoneNumber: string
-} | undefined>(undefined);
+initHashesPolling();
+initListingsPollings();
 
 root.render(
     <React.StrictMode>

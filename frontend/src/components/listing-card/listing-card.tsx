@@ -10,6 +10,8 @@ export interface ListingCardProps {
 
 export function ListingCard(props: ListingCardProps) {
 
+    // const [phone, setPhone] = 
+
     const getDistance = (): string => {
         const distanceInMeters = haversine(props.item.location, props.currentLocation);
         return distanceInMeters > 1000 ? `${(distanceInMeters / 1000).toFixed(2)}km` : `${Math.ceil(distanceInMeters / 10) * 10}m`;
