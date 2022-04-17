@@ -14,6 +14,7 @@ func GelastHashes(w http.ResponseWriter, req *http.Request) {
 	var hashes models.HashesRet
 	hashes.LastBlock = services.ReadLastFileHash()
 	hashes.LastWallet = services.ReadFileLastWallet()
+	hashes.LastFinded = services.ReadFindedAnimalLastHash()
 
 	json.NewEncoder(w).Encode(hashes)
 
