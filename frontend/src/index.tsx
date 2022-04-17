@@ -1,27 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import {Home, Navbar} from "./pages/index"
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {MantineProvider} from "@mantine/core";
+import { Home, Navbar } from "./pages/index"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MantineProvider } from "@mantine/core";
 import "./reset.scss"
 import Lost from './pages/lost/lost';
 import Found from './pages/found/found';
 import Search from './pages/search/search';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
+
+export const authStatusContext = React.createContext<{
+    phoneNumber: string
+} | undefined>(undefined);
+
 root.render(
     <React.StrictMode>
         <MantineProvider>
-            <Navbar/>
+            <Navbar />
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Home />}/>
-                    <Route path="/lost" element={<Lost />}/>
-                    <Route path="/found" element={<Found />}/>
-                    <Route path="/search" element={<Search />}/>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/lost" element={<Lost />} />
+                    <Route path="/found" element={<Found />} />
+                    <Route path="/search" element={<Search />} />
                 </Routes>
             </BrowserRouter>
         </MantineProvider>
